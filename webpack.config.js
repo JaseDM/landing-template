@@ -2,7 +2,6 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssWebpackPlugin = require('optimize-css-assets-webpack-plugin'); 
 const CopyPlugin = require('copy-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
  
@@ -17,12 +16,13 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
-            },
-            {
-                test: /styles\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+                test: /\.(sa|sc|c)ss$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader'
+
+                ]
             },
             {
             test: /\.html$/i,
@@ -59,9 +59,7 @@ module.exports = {
             patterns: [
             { from: 'src/assets/img/', to: 'assets/img/' },
         ],}),
-        new CleanWebpackPlugin({
-            dry: true
-        }),
+        
     ]
  
 }

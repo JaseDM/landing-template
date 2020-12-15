@@ -3,7 +3,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssWebpackPlugin = require('optimize-css-assets-webpack-plugin'); 
 const CopyPlugin = require('copy-webpack-plugin');
 const MinifyPlugin = require('babel-minify-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
  
@@ -25,12 +24,13 @@ module.exports = {
                 }
             },
             {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
-            },
-            {
-                test: /styles\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+                test: /\.(sa|sc|c)ss$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'sass-loader'
+
+                ]
             },
             {
             test: /\.html$/i,
@@ -40,18 +40,7 @@ module.exports = {
                 minimize: false
                 }
             },
-            {
-                test: /main\.scss$/i,
-                exclude: /node_modules/,
-                use: [
-                  // Creates `style` nodes from JS strings
-                  'style-loader',
-                  // Translates CSS into CommonJS
-                  'css-loader',
-                  // Compiles Sass to CSS
-                  'sass-loader',
-                ],
-              },
+           
             {
                 test: /\.(png|svg|jpg|gif)$/,
                 use: [
@@ -80,7 +69,6 @@ module.exports = {
             { from: 'src/assets/img/', to: 'assets/img/' },
         ],}),
         new MinifyPlugin(),
-        new CleanWebpackPlugin(),
     ]
  
 }
